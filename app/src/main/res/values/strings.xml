@@ -1,3 +1,7 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">appFinanza</string>
+=======
+    <string name="app_name">appFinanzas</string>
+>>>>>>> 79f4f529f84157666331907e0a426462460ab30b
 </resources>
