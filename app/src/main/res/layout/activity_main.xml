@@ -113,6 +113,18 @@
             android:text="¿No tienes una cuenta? Regístrate"
             android:textColor="#0039CC" />
 
+        <Button
+            android:id="@+id/btnIrCategorias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ir a categorias" />
+
+        <Button
+            android:id="@+id/btnIrGastos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ir a gastos" />
+
     </LinearLayout>
 
 </ScrollView>

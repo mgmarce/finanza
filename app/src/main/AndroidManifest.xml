@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppFinanza">
         <activity
+            android:name=".Ingresos"
+            android:exported="false" />
+        <activity
+            android:name=".FormAgregarGastos"
+            android:exported="false" />
+        <activity
+            android:name=".formAgregarG"
+            android:exported="false" />
+        <activity
+            android:name=".Gastos"
+            android:exported="false" />
+        <activity
+            android:name=".Categorias"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
