@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_estadisticas"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".Estadisticas">
+
+    <!-- Dropdown superior: Gastos ▼ -->
+    <Button
+        android:id="@+id/btnTipoReporte"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="Gastos ▼"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:backgroundTint="#FFFFFF"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+    <!-- Selector Mes / Año -->
+    <LinearLayout
+        android:id="@+id/layoutPeriodo"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:padding="2dp"
+        android:background="#EEEEEE"
+        app:layout_constraintTop_toBottomOf="@id/btnTipoReporte"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btnMes"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="Mes"
+            android:textAllCaps="false"
+            android:textSize="13sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#777777" />
+
+        <Button
+            android:id="@+id/btnAnio"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="Año"
+            android:textAllCaps="false"
+            android:textSize="13sp"
+            android:textColor="#AAAAAA"
+            android:backgroundTint="#DDDDDD" />
+    </LinearLayout>
+
+    <!-- FILTROS: Mes actual, Mes anterior, y dropdown de meses -->
+    <LinearLayout
+        android:id="@+id/layoutFiltrosMes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutPeriodo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btnMesActual"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="Mes actual"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#333333"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/btnMesAnterior"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="Mes anterior"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#333333"
+            android:layout_marginEnd="4dp" />
+
+        <!-- Dropdown para seleccionar un mes específico -->
+        <Spinner
+            android:id="@+id/spnMeses"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <!-- CONTENEDOR PRINCIPAL: SOLO UNA GRÁFICA DE PASTEL -->
+    <LinearLayout
+        android:id="@+id/layoutGrafica"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="#DDDDDD"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutFiltrosMes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnAtras">
+
+        <TextView
+            android:id="@+id/txtTituloGrafica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gráfico mensual de gastos"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Aquí va la gráfica de pastel (placeholder) -->
+        <FrameLayout
+            android:id="@+id/frameGraficaPastel"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:background="#F5F5F5"
+            android:layout_marginBottom="24dp">
+
+            <View
+                android:id="@+id/viewGraficaPastel"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:background="#FFCC80"
+                tools:ignore="ContentDescription" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <!-- BOTÓN DE ATRÁS ABAJO AL CENTRO -->
+    <Button
+        android:id="@+id/btnAtras"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:text="↩"
+        android:textSize="20sp"
+        android:textColor="#333333"
+        android:backgroundTint="#FFFFFF"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="12dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

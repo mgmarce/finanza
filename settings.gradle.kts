@@ -19,9 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-<<<<<<< HEAD
 rootProject.name = "appFinanza"
-=======
-rootProject.name = "appFinanzas"
->>>>>>> 79f4f529f84157666331907e0a426462460ab30b
 include(":app")
