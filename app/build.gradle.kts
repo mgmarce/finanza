@@ -3,25 +3,14 @@ plugins {
 }
 
 android {
-<<<<<<< HEAD
     namespace = "com.grupo8.appfinanza"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.grupo8.appfinanza"
         minSdk = 29
         targetSdk = 36
-=======
-    namespace = "com.grupo8.finanzas"
-    compileSdk = 34
 
-    defaultConfig {
-        applicationId = "com.grupo8.finanzas"
-        minSdk = 29
-        targetSdk = 34
->>>>>>> 79f4f529f84157666331907e0a426462460ab30b
         versionCode = 1
         versionName = "1.0"
 
@@ -38,21 +27,12 @@ android {
         }
     }
     compileOptions {
-<<<<<<< HEAD
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-=======
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
->>>>>>> 79f4f529f84157666331907e0a426462460ab30b
     }
 }
 
 dependencies {
-<<<<<<< HEAD
-=======
-
->>>>>>> 79f4f529f84157666331907e0a426462460ab30b
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
