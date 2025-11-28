@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/logoApp"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_logo" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/txtTituloMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Inicia sesión con tu cuenta"
+            android:textColor="#000000"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!-- Email -->
+        <EditText
+            android:id="@+id/editTxtEmailMain"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_edittext"
+            android:hint="ejemplo@correo.com"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="16dp" />
+
+        <!-- Password -->
+        <EditText
+            android:id="@+id/editTextClaveMain"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_edittext"
+            android:hint="*********"
+            android:inputType="textPassword"
+            android:paddingLeft="16dp" />
+
+        <!-- Botón verde -->
+        <Button
+            android:id="@+id/txtIngresarMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#3C763F"
+            android:text="Ingresar"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <!-- Texto OR -->
+        <TextView
+            android:id="@+id/txtOr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="- O inicia sesión con -"
+            android:textColor="#808080" />
+
+        <!-- Redes Sociales -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/bg_social"
+                android:padding="10dp"
+                android:src="@drawable/ic_google" />
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/bg_social"
+                android:padding="10dp"
+                android:src="@drawable/ic_facebook" />
+
+        </LinearLayout>
+
+        <!-- Crear cuenta -->
+        <TextView
+            android:id="@+id/txtSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="¿No tienes una cuenta? Regístrate"
+            android:textColor="#0039CC" />
+
+        <Button
+            android:id="@+id/btnIrCategorias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ir a categorias" />
+
+        <Button
+            android:id="@+id/btnIrGastos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ir a gastos" />
+
+    </LinearLayout>
+
+</ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Categorias"
+    android:background="#FAFAFA" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Encabezado -->
+        <LinearLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imvLogoCategoria"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/logo"
+                android:contentDescription="Logo Finanzas" />
+
+            <TextView
+                android:id="@+id/tvBienvenidaCategoria"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Agregar Categoría"
+                android:textAlignment="center"
+                android:textColor="#333333"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+        <!-- Campo de texto -->
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="25dp"
+            app:layout_constraintTop_toBottomOf="@id/headerLayout">
+
+            <TextView
+                android:id="@+id/tvCategoriaCategorias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ingrese nombre de la categoría:"
+                android:textColor="#212121"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ej. Hogar"
+                android:inputType="text"
+                android:padding="8dp"
+                android:background="@android:drawable/edit_text" />
+        </LinearLayout>
+
+        <!-- Tipo de categoría (RadioGroup) -->
+        <RadioGroup
+            android:id="@+id/rgTipoCategoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <RadioButton
+                android:id="@+id/rbtnIngresoCategorias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingreso"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/rbtnGastoCategorias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gasto"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="40dp" />
+        </RadioGroup>
+
+        <!-- FILA 1 de íconos -->
+        <LinearLayout
+            android:id="@+id/rowIcons1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/rgTipoCategoria">
+
+            <ImageView
+                android:id="@+id/imgCompras"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:contentDescription="Compras"
+                android:padding="10dp"
+                android:src="@drawable/outline_add_shopping_cart_24"
+                app:tint="#3C763F" />
+
+            <ImageView
+                android:id="@+id/imgBanco"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:contentDescription="Banco"
+                android:padding="10dp"
+                android:src="@drawable/outline_account_balance_24"
+                app:tint="#3C763F" />
+
+            <ImageView
+                android:id="@+id/imgHogar"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:contentDescription="Hogar"
+                android:padding="10dp"
+                android:src="@drawable/outline_add_home_24"
+                app:tint="#3C763F" />
+
+            <ImageView
+                android:id="@+id/imgTransporte"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:contentDescription="Transporte"
+                android:padding="10dp"
+                android:src="@drawable/outline_airport_shuttle_24"
+                app:tint="#3C763F" />
+        </LinearLayout>
+
+        <!-- FILA 2 de íconos -->
+        <LinearLayout
+            android:id="@+id/rowIcons2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/rowIcons1">
+
+            <ImageView
+                android:id="@+id/imgComida"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:padding="10dp"
+                app:tint="#3C763F"
+                android:src="@drawable/outline_restaurant_24"
+                android:contentDescription="Comida" />
+
+            <ImageView
+                android:id="@+id/imgEntretenimiento"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:padding="10dp"
+                app:tint="#3C763F"
+                android:src="@drawable/outline_movie_24"
+                android:contentDescription="Entretenimiento" />
+
+            <ImageView
+                android:id="@+id/imgSalud"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:padding="10dp"
+                app:tint="#3C763F"
+                android:src="@drawable/outline_local_hospital_24"
+                android:contentDescription="Salud" />
+
+            <ImageView
+                android:id="@+id/imgEducacion"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:padding="10dp"
+                app:tint="#3C763F"
+                android:src="@drawable/outline_school_24"
+                android:contentDescription="Educación" />
+        </LinearLayout>
+
+        <!-- FILA 3 de íconos -->
+        <LinearLayout
+            android:id="@+id/rowIcons3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/rowIcons2">
+
+            <ImageView
+                android:id="@+id/imgServicios"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:padding="10dp"
+                app:tint="#3C763F"
+                android:src="@drawable/outline_bolt_24"
+                android:contentDescription="Servicios" />
+
+            <ImageView
+                android:id="@+id/imgMascotas"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:padding="10dp"
+                app:tint="#3C763F"
+                android:src="@drawable/outline_pets_24"
+                android:contentDescription="Mascotas" />
+
+            <ImageView
+                android:id="@+id/imgRegalos"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:padding="10dp"
+                app:tint="#3C763F"
+                android:src="@drawable/outline_card_giftcard_24"
+                android:contentDescription="Regalos" />
+
+            <ImageView
+                android:id="@+id/imgImpuestos"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_icon_selector"
+                android:padding="10dp"
+                app:tint="#3C763F"
+                android:src="@drawable/outline_request_quote_24"
+                android:contentDescription="Impuestos" />
+        </LinearLayout>
+
+        <!-- Botones inferiores -->
+        <LinearLayout
+            android:id="@+id/linearButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@id/rowIcons3">
+
+            <Button
+                android:id="@+id/btnGuardarCategoria"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#3C763F"
+                android:text="Guardar"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/btnSalir"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#3C763F"
+                android:text="Salir"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
