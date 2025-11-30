@@ -13,7 +13,7 @@ import android.content.res.ColorStateList;
 public class Categorias extends AppCompatActivity {
     private EditText etNombre;
     private RadioButton rbtnIngreso, rbtnGasto;
-    private Button btnGuardar, btnSalir;
+    private Button btnGuardar, btnSalir, btnSalir2;
     private ImageView[] iconos; // arreglo de íconos
     private int iconoSeleccionado = -1;
     @Override
@@ -25,6 +25,7 @@ public class Categorias extends AppCompatActivity {
         rbtnGasto = findViewById(R.id.rbtnGastoCategorias);
         btnGuardar = findViewById(R.id.btnGuardarCategoria);
         btnSalir = findViewById(R.id.btnSalir);
+        btnSalir2 = findViewById(R.id.btnRegresarCategorias);
 
         iconos = new ImageView[]{
                 findViewById(R.id.imgCompras),
@@ -46,6 +47,7 @@ public class Categorias extends AppCompatActivity {
         }
         btnGuardar.setOnClickListener(v -> guardarCategoria());
         btnSalir.setOnClickListener(v -> finish());
+        btnSalir2.setOnClickListener(v -> finish());
     }
 
     private void seleccionarIcono(int index) {
@@ -77,17 +79,11 @@ public class Categorias extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(this,
-                "Categoría guardada:\nNombre: " + nombre +
-                        "\nTipo: " + tipo +
-                        "\nÍcono N°: " + iconoSeleccionado,
-                Toast.LENGTH_LONG).show();
+        CategoriaManager.guardarCategoria(this, nombre, tipo, iconoSeleccionado);
 
-        etNombre.setText("");
-        iconoSeleccionado = -1;
-        for (ImageView img : iconos) {
-            img.setBackgroundResource(R.drawable.bg_icon_normal);
-            img.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.green_dark)));
-        }
+        Toast.makeText(this,
+                "Categoría guardada correctamente", Toast.LENGTH_SHORT).show();
+
+        finish(); // salir y volver atrás
     }
 }

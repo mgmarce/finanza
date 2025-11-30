@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">appFinanza</string>
+    <string name="app_name">Finanzas</string>
+    <string name="client_id">710615711472-sl5u6a2sjh9g5g54a5n1eneaoi79o47a.apps.googleusercontent.com</string>
 </resources>

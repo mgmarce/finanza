@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -10,8 +13,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/Theme.AppFinanza">
+        <activity
+            android:name=".MostrarIngresos"
+            android:exported="false" />
+        <activity
+            android:name=".MostrarGastos"
+            android:exported="false" />
+        <activity
+            android:name=".CategoriaManager"
+            android:exported="false" />
+        <activity
+            android:name=".FormularioAgregarIngresos"
+            android:exported="false" />
+        <activity
+            android:name=".Registrarse"
+            android:exported="false" />
+        <activity
+            android:name=".Inicio"
+            android:exported="false" />
         <activity
             android:name=".Ingresos"
             android:exported="false" />
@@ -24,12 +44,15 @@
         <activity
             android:name=".Categorias"
             android:exported="false" />
-
+        <activity
+            android:name=".Estadisticas"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

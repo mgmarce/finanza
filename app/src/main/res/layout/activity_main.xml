@@ -63,7 +63,7 @@
 
         <!-- Botón verde -->
         <Button
-            android:id="@+id/txtIngresarMain"
+            android:id="@+id/btnIngresarMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -88,12 +88,28 @@
             android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
+            <!--
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:background="@drawable/bg_social"
                 android:padding="10dp"
                 android:src="@drawable/ic_google" />
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/btnGoogle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>-->
+
+            <ImageView
+                android:id="@+id/btnGoogle"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/bg_social"
+                android:padding="10dp"
+                android:src="@drawable/ic_google"
+                android:clickable="true"
+                android:focusable="true"/>
 
             <ImageView
                 android:layout_width="45dp"
@@ -112,19 +128,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="¿No tienes una cuenta? Regístrate"
-            android:textColor="#0039CC" />
-
-        <Button
-            android:id="@+id/btnIrCategorias"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ir a categorias" />
-
-        <Button
-            android:id="@+id/btnIrGastos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ir a gastos" />
+            android:textColor="#0039CC"
+            android:clickable="true"
+            android:focusable="true" />
 
     </LinearLayout>
 
@@ -133,7 +139,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

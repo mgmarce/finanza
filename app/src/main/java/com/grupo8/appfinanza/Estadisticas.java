@@ -1,176 +1,250 @@
 package com.grupo8.appfinanza;
 
+import android.Manifest;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Environment;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Estadisticas extends AppCompatActivity {
 
     private Spinner spnMeses;
-    private Button btnMesActual, btnMesAnterior, btnAtras;
-    private View viewGraficaPastel;
+    private Button btnMesActual, btnMesAnterior, btnAtras, btnGenerarReporte;
+    private PieChart pieChart;
+    private TextView tvTotalGastos, tvTotalIngresos, tvCatMasGasto, tvCatMasIngreso;
 
-    // Meses que se mostrarán en el Spinner (posición 0 es "Seleccionar mes")
     private final String[] meses = {
             "Seleccionar mes",
             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     };
 
-
-    private final double[] ingresosPorMes = {
-            800, 750, 900, 850, 920, 880,
-            950, 970, 910, 930, 890, 910
-    };
-
-    private final double[] egresosPorMes = {
-            500, 520, 610, 580, 600, 590,
-            640, 650, 630, 620, 605, 615
-    };
-
-    // Guardamos el índice del mes actual (0 = Enero, 11 = Diciembre)
     private int indiceMesActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Usa tu layout activity_estadisticas.xml
         setContentView(R.layout.activity_estadisticas);
 
-        // Referenciar vistas del XML
         spnMeses = findViewById(R.id.spnMeses);
         btnMesActual = findViewById(R.id.btnMesActual);
         btnMesAnterior = findViewById(R.id.btnMesAnterior);
         btnAtras = findViewById(R.id.btnAtras);
-        viewGraficaPastel = findViewById(R.id.viewGraficaPastel);
+        btnGenerarReporte = findViewById(R.id.btnGenerarReporte);
+        btnGenerarReporte.setOnClickListener(v -> seleccionarUbicacionTXT());
 
-        // Obtener mes actual del sistema (0 = Enero, 11 = Diciembre)
+
+        pieChart = findViewById(R.id.pieChart);
+
         Calendar hoy = Calendar.getInstance();
         indiceMesActual = hoy.get(Calendar.MONTH);
 
         configurarSpinnerMeses();
-        configurarBotonesPeriodo();
-        configurarBotonAtras();
+        configurarBotones();
+        configurarPieChartInicial();
 
-        // Al iniciar: dejar "Seleccionar mes" y gráfica neutra
-        spnMeses.setSelection(0);
-        actualizarGraficaSinDatos();
+        // ---- DATOS DINÁMICOS ----
+        DatabaseHelper db = new DatabaseHelper(this);
+
+        int mesActual = Calendar.getInstance().get(Calendar.MONTH) + 1;
+
+        double totalGastos = db.obtenerTotalGastosMes(mesActual);
+        double totalIngresos = db.obtenerTotalIngresosMes(mesActual);
+
+        String catMasGasto = db.categoriaMasGasto();
+        String catMasIngreso = db.categoriaMasIngreso();
+
+        tvTotalGastos = findViewById(R.id.tvTotalGastos);
+        tvTotalIngresos = findViewById(R.id.tvTotalIngresos);
+        tvCatMasGasto = findViewById(R.id.tvCategoriaMasGasto);
+        tvCatMasIngreso = findViewById(R.id.tvCategoriaMasIngreso);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            }, 1);
+        }
+
+
     }
 
-    /**
-     * Configura el Spinner de meses con "Seleccionar mes" + 12 meses.
-     */
-    private void configurarSpinnerMeses() {
-        ArrayAdapter<String> adapterMeses = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                meses
-        );
-        adapterMeses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnMeses.setAdapter(adapterMeses);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        spnMeses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // position 0 = "Seleccionar mes" -> no mostramos datos
-                if (position == 0) {
-                    actualizarGraficaSinDatos();
-                } else {
-                    int indiceMes = position - 1; // para mapear a los arreglos 0..11
-                    actualizarGraficaYResumen(indiceMes);
+        if (requestCode == 200 && resultCode == RESULT_OK) {
+
+            if (data == null || data.getData() == null) {
+                Toast.makeText(this, "No se seleccionó ubicación", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            android.net.Uri uri = data.getData();
+
+            // ➤ Obtener mes seleccionado en el spinner
+            int posicion = spnMeses.getSelectedItemPosition();
+
+            if (posicion == 0) {
+                Toast.makeText(this, "Seleccione un mes antes de generar reporte", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int mesSeleccionado = posicion; // 1-12
+
+            DatabaseHelper db = new DatabaseHelper(this);
+            ArrayList<String> datos = db.obtenerReporteCompleto(mesSeleccionado);
+
+            try {
+                java.io.OutputStream outputStream = getContentResolver().openOutputStream(uri);
+                StringBuilder contenido = new StringBuilder();
+
+                contenido.append("=== REPORTE DE FINANZAS DEL MES DE ")
+                        .append(meses[mesSeleccionado])
+                        .append(" ===\n\n");
+
+                for (String linea : datos) {
+                    contenido.append(linea).append("\n");
                 }
+
+                outputStream.write(contenido.toString().getBytes());
+                outputStream.close();
+
+                Toast.makeText(this, "Reporte guardado correctamente", Toast.LENGTH_LONG).show();
+
+            } catch (Exception e) {
+                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // No se usa
-            }
-        });
+        }
     }
 
-    /**
-     * Configura los botones "Mes actual" y "Mes anterior".
-     */
-    private void configurarBotonesPeriodo() {
-        btnMesActual.setOnClickListener(v -> {
-            // Selecciona en el spinner el mes actual (sumamos 1 por el "Seleccionar mes")
-            spnMeses.setSelection(indiceMesActual + 1);
-        });
 
-        btnMesAnterior.setOnClickListener(v -> {
-            // Mes anterior al actual (si es enero, pasa a diciembre)
-            int indiceMesAnterior = (indiceMesActual + 11) % 12;
-            spnMeses.setSelection(indiceMesAnterior + 1);
-        });
-    }
 
-    /**
-     * Configura el botón de atrás para regresar a la pantalla anterior.
-     */
-    private void configurarBotonAtras() {
-        btnAtras.setOnClickListener(v -> finish());
-    }
+    private void seleccionarUbicacionTXT() {
 
-    /**
-     * Se llama cuando el usuario aún no ha seleccionado un mes.
-     * Deja la gráfica en modo "sin información".
-     */
-    private void actualizarGraficaSinDatos() {
-        // Color gris clarito para indicar que no hay datos cargados
-        viewGraficaPastel.setBackgroundColor(Color.parseColor("#DDDDDD"));
-        viewGraficaPastel.setContentDescription("Sin datos seleccionados");
-    }
-
-    /**
-     * Actualiza la "gráfica" y muestra un resumen analítico usando los datos del mes.
-     *
-     * @param indiceMes 0 = enero, 1 = febrero, ..., 11 = diciembre
-     */
-    private void actualizarGraficaYResumen(int indiceMes) {
-        if (indiceMes < 0 || indiceMes >= ingresosPorMes.length) {
-            actualizarGraficaSinDatos();
+        // Validar mes
+        int posicion = spnMeses.getSelectedItemPosition();
+        if (posicion == 0) {
+            Toast.makeText(this, "Seleccione un mes primero", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        double ingresos = ingresosPorMes[indiceMes];
-        double egresos = egresosPorMes[indiceMes];
-        double balance = ingresos - egresos;
+        String nombreArchivo = "Reporte_" + meses[posicion] + ".txt";
 
-        // Porcentaje de egresos respecto a los ingresos
-        double porcentajeGasto = ingresos == 0 ? 0 : (egresos / ingresos) * 100.0;
+        android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_CREATE_DOCUMENT);
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_TITLE, nombreArchivo);
 
-        // Color de la "gráfica":
-        // Verde suave si el balance es positivo, rojo suave si es negativo.
-        if (balance >= 0) {
-            viewGraficaPastel.setBackgroundColor(Color.parseColor("#A5D6A7")); // verde claro
-        } else {
-            viewGraficaPastel.setBackgroundColor(Color.parseColor("#EF9A9A")); // rojo claro
-        }
+        startActivityForResult(intent, 200);
+    }
 
-        String mes = meses[indiceMes + 1];
-        String descripcion = "Mes: " + mes +
-                ". Ingresos: $" + String.format("%.2f", ingresos) +
-                ", Egresos: $" + String.format("%.2f", egresos) +
-                ", Balance: $" + String.format("%.2f", balance) +
-                ", Porcentaje gastado: " + String.format("%.1f", porcentajeGasto) + "%";
-        viewGraficaPastel.setContentDescription(descripcion);
 
-        // Resumen rápido (lo puedes quitar si no te gusta el Toast)
-        String resumenToast = mes + "\n" +
-                "Ingresos: $" + String.format("%.2f", ingresos) + "\n" +
-                "Egresos: $" + String.format("%.2f", egresos) + "\n" +
-                "Balance: $" + String.format("%.2f", balance) + "\n" +
-                "Gastos: " + String.format("%.1f", porcentajeGasto) + "% de los ingresos";
-        Toast.makeText(this, resumenToast, Toast.LENGTH_LONG).show();
+    private void configurarSpinnerMeses() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, meses
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnMeses.setAdapter(adapter);
+
+        spnMeses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, android.view.View view, int position, long id) {
+                if (position == 0) {
+                    mostrarPieSinDatos();
+                } else {
+                    actualizarPieChart(position);
+                }
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
+    private void configurarBotones() {
+        btnMesActual.setOnClickListener(v ->
+                spnMeses.setSelection(indiceMesActual + 1));
+
+        btnMesAnterior.setOnClickListener(v -> {
+            int mesAnterior = (indiceMesActual + 11) % 12;
+            spnMeses.setSelection(mesAnterior + 1);
+        });
+
+        btnAtras.setOnClickListener(v -> finish());
+    }
+
+    private void configurarPieChartInicial() {
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setDrawHoleEnabled(false);
+        pieChart.setTransparentCircleRadius(0f);
+        mostrarPieSinDatos();
+    }
+
+    private void mostrarPieSinDatos() {
+        ArrayList<PieEntry> valores = new ArrayList<>();
+        valores.add(new PieEntry(1f, "Sin datos"));
+
+        PieDataSet dataSet = new PieDataSet(valores, "");
+        dataSet.setColors(Color.LTGRAY);
+        PieData data = new PieData(dataSet);
+        data.setDrawValues(false);
+
+        pieChart.setData(data);
+        pieChart.invalidate();
+    }
+
+    // ---- DINÁMICO: CONSULTA BD PARA ACTUALIZAR EL PIECHART ----
+    private void actualizarPieChart(int mesSeleccionado) {
+
+        DatabaseHelper db = new DatabaseHelper(this);
+
+        int mes = mesSeleccionado; // 1–12
+
+        double ingresos = db.obtenerTotalIngresosMes(mes);
+        double gastos = db.obtenerTotalGastosMes(mes);
+
+        ArrayList<PieEntry> valores = new ArrayList<>();
+        valores.add(new PieEntry((float) ingresos, "Ingresos"));
+        valores.add(new PieEntry((float) gastos, "Gastos"));
+
+        PieDataSet dataSet = new PieDataSet(valores, "Finanzas " + meses[mes]);
+        ArrayList<Integer> colores = new ArrayList<>();
+        colores.add(Color.parseColor("#4CAF50")); // verde
+        colores.add(Color.parseColor("#F44336")); // rojo
+        dataSet.setColors(colores);
+
+        PieData data = new PieData(dataSet);
+        pieChart.setData(data);
+        pieChart.invalidate();
+
+        tvTotalGastos.setText("Total Gastos: $" + gastos);
+        tvTotalIngresos.setText("Total Ingresos: $" + ingresos);
+        tvCatMasGasto.setText("Categoría con más gastos: " + db.categoriaMasGasto());
+        tvCatMasIngreso.setText("Categoría con más ingresos: " + db.categoriaMasIngreso());
+
+
+        /*String resumen = meses[mes] + "\n" +
+                "Ingresos: $" + ingresos + "\n" +
+                "Gastos: $" + gastos + "\n" +
+                "Balance: $" + (ingresos - gastos);
+
+        Toast.makeText(this, resumen, Toast.LENGTH_LONG).show();*/
     }
 }
-
